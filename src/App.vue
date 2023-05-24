@@ -1,7 +1,21 @@
 <template>
-  <router-view />
+  <v-app>
+    <v-app-bar>
+      <v-tabs v-model="tab">
+        <v-tab to="/">Cadastrar</v-tab>
+        <v-tab to="/viewer">Visualizar</v-tab>
+      </v-tabs>
+    </v-app-bar>
+    <router-view></router-view>
+  </v-app>
 </template>
 
-<script setup>
-  //
+<script>
+export default {
+  data() {
+    return {
+      tab: "1",
+    };
+  },
+};
 </script>
