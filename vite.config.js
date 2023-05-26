@@ -6,12 +6,6 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 
-module.exports = {
-  chainWebpack: (config) => {
-    config.resolve.symlinks(false);
-  },
-};
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
