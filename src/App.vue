@@ -1,6 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar>
+    <v-app-bar color="primary">
+      <v-toolbar-title>
+        <v-icon>mdi-lightning-bolt</v-icon>
+        TeslaVehicles
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
       <v-tabs v-model="tab">
         <v-tab to="/">Cadastrar</v-tab>
         <v-tab to="/viewer">Visualizar</v-tab>
