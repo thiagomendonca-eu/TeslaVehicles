@@ -9,6 +9,7 @@
       <v-tabs v-model="tab">
         <v-tab to="/">Cadastrar</v-tab>
         <v-tab to="/viewer">Visualizar</v-tab>
+        <v-tab to="/reports">Relatórios</v-tab>
       </v-tabs>
     </v-app-bar>
     <router-view></router-view>
