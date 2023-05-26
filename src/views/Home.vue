@@ -103,6 +103,7 @@ export default {
 
   methods: {
     limpar() {
+      this.id = null;
       this.marca = null;
       this.modelo = null;
       this.ano = null;
@@ -114,39 +115,96 @@ export default {
       this.chassi = null;
     },
     salvar() {
-      this.axios
-        .post(
-          `${this.supabaseUrl}/veiculos`,
-          {
-            marca: this.marca,
-            modelo: this.modelo,
-            ano: this.ano + "-01",
-            cor: this.cor,
-            tipo_veiculo: this.tipo_veiculo,
-            tipo_motor: this.tipo_motor,
-            combustivel: this.combustivel,
-            cambio: this.cambio,
-            chassi: this.chassi,
-          },
-          {
-            headers: {
-              apikey: this.supabaseApiKey,
-              Authorization: `Bearer ${this.supabaseToken}`,
+      // Se tiver ID, é uma edição, se-não é um novo registro
+      if (this.id) {
+        this.axios
+          .patch(
+            `${this.supabaseUrl}/veiculos?id=eq.${this.id}`,
+            {
+              marca: this.marca,
+              modelo: this.modelo,
+              ano: this.ano + "-01",
+              cor: this.cor,
+              tipo_veiculo: this.tipo_veiculo,
+              tipo_motor: this.tipo_motor,
+              combustivel: this.combustivel,
+              cambio: this.cambio,
+              chassi: this.chassi,
             },
-            contentType: "application/json",
-          }
-        )
+            {
+              headers: {
+                apikey: this.supabaseApiKey,
+                Authorization: `Bearer ${this.supabaseToken}`,
+              },
+              contentType: "application/json",
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            this.limpar();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        this.axios
+          .post(
+            `${this.supabaseUrl}/veiculos`,
+            {
+              marca: this.marca,
+              modelo: this.modelo,
+              ano: this.ano + "-01",
+              cor: this.cor,
+              tipo_veiculo: this.tipo_veiculo,
+              tipo_motor: this.tipo_motor,
+              combustivel: this.combustivel,
+              cambio: this.cambio,
+              chassi: this.chassi,
+            },
+            {
+              headers: {
+                apikey: this.supabaseApiKey,
+                Authorization: `Bearer ${this.supabaseToken}`,
+              },
+              contentType: "application/json",
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            this.limpar();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+  },
+  beforeMount() {
+    if (this.$route.params.id) {
+      this.axios
+        .get(`${this.supabaseUrl}/veiculos?id=eq.${this.$route.params.id}`, {
+          headers: {
+            apikey: this.supabaseApiKey,
+            Authorization: `Bearer ${this.supabaseToken}`,
+          },
+          contentType: "application/json",
+        })
         .then((response) => {
-          console.log(response);
-          this.limpar();
+          this.id = response.data[0].id;
+          this.marca = response.data[0].marca;
+          this.modelo = response.data[0].modelo;
+          this.ano = response.data[0].ano.substring(0, 7);
+          this.cor = response.data[0].cor;
+          this.tipo_veiculo = response.data[0].tipo_veiculo;
+          this.tipo_motor = response.data[0].tipo_motor;
+          this.combustivel = response.data[0].combustivel;
+          this.cambio = response.data[0].cambio;
+          this.chassi = response.data[0].chassi;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
-  },
-  beforeMount() {
-    this.id = this.$route.params.id;
+    }
   },
 };
 </script>
