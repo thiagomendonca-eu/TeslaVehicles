@@ -3,7 +3,7 @@
     <v-container class="mt-8">
       <v-card>
         <v-card-title v-show="!id">Cadastrar Veículo</v-card-title>
-        <v-card-title v-show="id">Editar de Veículo: {{ id }}</v-card-title>
+        <v-card-title v-show="id">Editar Veículo: {{ id }}</v-card-title>
         <v-form>
           <v-container>
             <v-row>
@@ -177,6 +177,7 @@ export default {
             console.log(error);
           });
       }
+      this.$router.push({ name: "Viewer" });
     },
   },
   beforeMount() {
