@@ -13,7 +13,11 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="veiculo in veiculos" :key="veiculo.id" sm="4">
+        <v-col
+          v-for="veiculo in veiculos"
+          :key="veiculo.id"
+          sm="4"
+        >
           <v-card>
             <v-img
               :src="`https://source.unsplash.com/random/?car=${veiculo.id}`"
@@ -62,8 +66,8 @@ export default {
   },
 
   methods: {
-    fetchAll() {
-      this.axios
+    async fetchAll(){
+      await this.axios
         .get(`${this.supabaseUrl}/veiculos?select=*`, {
           headers: {
             apikey: this.supabaseApiKey,
@@ -105,10 +109,6 @@ export default {
         veiculo.modelo.toLowerCase().includes(search.toLowerCase())
       );
     },
-  },
-
-  beforeUpdate() {
-    this.fetchAll();
   },
 
   beforeMount() {
