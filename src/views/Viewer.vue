@@ -13,7 +13,11 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="(veiculo, index) in veiculos" :key="index" sm="4">
+        <v-col
+          v-for="(veiculo, index) in veiculos"
+          :key="index + veiculo.modelo"
+          sm="4"
+        >
           <v-card>
             <v-img
               :src="`https://source.unsplash.com/random/?car=${veiculo.id}`"
@@ -108,7 +112,6 @@ export default {
   },
 
   beforeMount() {
-    this.veiculos = [];
     this.fetchAll();
   },
 };
