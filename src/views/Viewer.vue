@@ -109,6 +109,9 @@ export default {
         veiculo.modelo.toLowerCase().includes(search.toLowerCase())
       );
     },
+    veiculos(){
+      this.$forceUpdate();
+    }
   },
 
   beforeMount() {
