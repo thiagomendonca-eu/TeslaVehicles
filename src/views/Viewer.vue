@@ -56,7 +56,7 @@
 export default {
   data() {
     return {
-      veiculos: [],
+      veiculos: null,
       veiculosCopy: [],
       search: "",
       supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
