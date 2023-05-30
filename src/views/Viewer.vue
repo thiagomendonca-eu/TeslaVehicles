@@ -13,11 +13,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col
-          v-for="veiculo in veiculos"
-          :key="veiculo.id"
-          sm="4"
-        >
+        <v-col v-for="(veiculo, index) in veiculos" :key="index" sm="4">
           <v-card>
             <v-img
               :src="`https://source.unsplash.com/random/?car=${veiculo.id}`"
@@ -66,7 +62,7 @@ export default {
   },
 
   methods: {
-    async fetchAll(){
+    async fetchAll() {
       await this.axios
         .get(`${this.supabaseUrl}/veiculos?select=*`, {
           headers: {
@@ -109,9 +105,6 @@ export default {
         veiculo.modelo.toLowerCase().includes(search.toLowerCase())
       );
     },
-    veiculos(){
-      this.$forceUpdate();
-    }
   },
 
   beforeMount() {
