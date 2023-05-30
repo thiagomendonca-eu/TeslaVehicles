@@ -112,6 +112,7 @@ export default {
   },
 
   beforeMount() {
+    this.veiculos = null;
     this.fetchAll();
   },
 };
