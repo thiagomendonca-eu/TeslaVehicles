@@ -107,9 +107,12 @@ export default {
     },
   },
 
-  beforeMount() {
+  beforeRouteEnter() {
     this.fetchAll();
   },
+  // beforeMount() {
+  //   this.fetchAll();
+  // },
 };
 </script>
 
