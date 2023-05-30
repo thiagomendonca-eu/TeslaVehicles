@@ -12,7 +12,7 @@
           />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="veiculos">
         <v-col v-for="(veiculo, index) in veiculos" :key="index" sm="4">
           <v-card>
             <v-img
@@ -42,6 +42,15 @@
               >
             </v-card-actions>
           </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-else justify="center">
+        <v-col justify="center" cols="2">
+          <v-progress-circular
+            indeterminate
+            size="64"
+            color="primary"
+          ></v-progress-circular>
         </v-col>
       </v-row>
     </v-container>
@@ -109,6 +118,7 @@ export default {
   },
 
   beforeMount() {
+    this.veiculos = null;
     this.fetchAll();
   },
 };
