@@ -62,8 +62,8 @@ export default {
   },
 
   methods: {
-    async fetchAll() {
-      await this.axios
+    fetchAll() {
+      this.axios
         .get(`${this.supabaseUrl}/veiculos?select=*`, {
           headers: {
             apikey: this.supabaseApiKey,
