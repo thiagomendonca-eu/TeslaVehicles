@@ -117,10 +117,15 @@ export default {
     },
   },
 
-  beforeMount() {
+  serverPrefetch() {
     this.veiculos = null;
     this.fetchAll();
   },
+
+  // beforeMount() {
+  //   this.veiculos = null;
+  //   this.fetchAll();
+  // },
 };
 </script>
 
