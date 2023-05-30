@@ -13,11 +13,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col
-          v-for="(veiculo, index) in veiculos"
-          :key="index + veiculo.modelo"
-          sm="4"
-        >
+        <v-col v-for="(veiculo, index) in veiculos" :key="index" sm="4">
           <v-card>
             <v-img
               :src="`https://source.unsplash.com/random/?car=${veiculo.id}`"
@@ -56,7 +52,7 @@
 export default {
   data() {
     return {
-      veiculos: null,
+      veiculos: [],
       veiculosCopy: [],
       search: "",
       supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
@@ -76,6 +72,7 @@ export default {
           contentType: "application/json",
         })
         .then((response) => {
+          console.log(response.data);
           this.veiculos = response.data;
           this.veiculosCopy = response.data;
         })
@@ -112,7 +109,6 @@ export default {
   },
 
   beforeMount() {
-    this.veiculos = null;
     this.fetchAll();
   },
 };
