@@ -81,7 +81,6 @@ export default {
           contentType: "application/json",
         })
         .then((response) => {
-          console.log(response.data);
           this.veiculos = response.data;
           this.veiculosCopy = response.data;
         })
@@ -117,15 +116,9 @@ export default {
     },
   },
 
-  serverPrefetch() {
-    this.veiculos = null;
+  beforeMount() {
     this.fetchAll();
   },
-
-  // beforeMount() {
-  //   this.veiculos = null;
-  //   this.fetchAll();
-  // },
 };
 </script>
 
