@@ -4,11 +4,17 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@/views/Login.vue"),
+  },
+  {
+    path: "/home",
     name: "Home",
     component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
     children: [
       {
-        path: "/:id",
+        path: "/home/:id",
         component: () =>
           import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
       },
@@ -19,12 +25,6 @@ const routes = [
     name: "Viewer",
     component: () =>
       import(/* webpackChunkName: "viewer" */ "@/views/Viewer.vue"),
-  },
-  {
-    path: "/reports",
-    name: "Reports",
-    component: () =>
-      import(/* webpackChunkName: "reports" */ "@/views/Reports.vue"),
   },
 ];
 

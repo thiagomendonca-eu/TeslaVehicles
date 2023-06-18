@@ -1,5 +1,4 @@
 <template>
-  <v-main>
     <v-container class="mt-8">
       <v-card>
         <v-card-title v-show="!id">Cadastrar Veículo</v-card-title>
@@ -78,136 +77,118 @@
         </v-form>
       </v-card>
     </v-container>
-  </v-main>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      id: null,
-      marca: null,
-      modelo: null,
-      ano: null,
-      cor: null,
-      tipo_veiculo: null,
-      tipo_motor: null,
-      combustivel: null,
-      cambio: null,
-      chassi: null,
-      supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-      supabaseApiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-      supabaseToken: import.meta.env.VITE_SUPABASE_SERVICE_KEY,
-    };
-  },
+<script setup>
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from 'vue-router'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import axios from "axios";
 
-  methods: {
-    limpar() {
-      this.id = null;
-      this.marca = null;
-      this.modelo = null;
-      this.ano = null;
-      this.cor = null;
-      this.tipo_veiculo = null;
-      this.tipo_motor = null;
-      this.combustivel = null;
-      this.cambio = null;
-      this.chassi = null;
-    },
-    salvar() {
-      // Se tiver ID, é uma edição, se-não é um novo registro
-      if (this.id) {
-        this.axios
-          .patch(
-            `${this.supabaseUrl}/veiculos?id=eq.${this.id}`,
-            {
-              marca: this.marca,
-              modelo: this.modelo,
-              ano: this.ano + "-01",
-              cor: this.cor,
-              tipo_veiculo: this.tipo_veiculo,
-              tipo_motor: this.tipo_motor,
-              combustivel: this.combustivel,
-              cambio: this.cambio,
-              chassi: this.chassi,
-            },
-            {
-              headers: {
-                apikey: this.supabaseApiKey,
-                Authorization: `Bearer ${this.supabaseToken}`,
-              },
-              contentType: "application/json",
-            }
-          )
-          .then((response) => {
-            console.log(response);
-            this.limpar();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        this.axios
-          .post(
-            `${this.supabaseUrl}/veiculos`,
-            {
-              marca: this.marca,
-              modelo: this.modelo,
-              ano: this.ano + "-01",
-              cor: this.cor,
-              tipo_veiculo: this.tipo_veiculo,
-              tipo_motor: this.tipo_motor,
-              combustivel: this.combustivel,
-              cambio: this.cambio,
-              chassi: this.chassi,
-            },
-            {
-              headers: {
-                apikey: this.supabaseApiKey,
-                Authorization: `Bearer ${this.supabaseToken}`,
-              },
-              contentType: "application/json",
-            }
-          )
-          .then((response) => {
-            console.log(response);
-            this.limpar();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      this.$router.push({ name: "Viewer" });
-    },
-  },
-  beforeMount() {
-    if (this.$route.params.id) {
-      this.axios
-        .get(`${this.supabaseUrl}/veiculos?id=eq.${this.$route.params.id}`, {
-          headers: {
-            apikey: this.supabaseApiKey,
-            Authorization: `Bearer ${this.supabaseToken}`,
-          },
-          contentType: "application/json",
-        })
-        .then((response) => {
-          this.id = response.data[0].id;
-          this.marca = response.data[0].marca;
-          this.modelo = response.data[0].modelo;
-          this.ano = response.data[0].ano.substring(0, 7);
-          this.cor = response.data[0].cor;
-          this.tipo_veiculo = response.data[0].tipo_veiculo;
-          this.tipo_motor = response.data[0].tipo_motor;
-          this.combustivel = response.data[0].combustivel;
-          this.cambio = response.data[0].cambio;
-          this.chassi = response.data[0].chassi;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  },
+const logged = ref(false);
+
+const router = useRouter();
+const route = useRoute();
+ 
+const id = ref(null);
+const marca = ref(null);
+const modelo = ref(null);
+const ano = ref(null);
+const cor = ref(null);
+const tipo_veiculo = ref(null);
+const tipo_motor = ref(null);
+const combustivel = ref(null);
+const cambio = ref(null);
+const chassi = ref(null);
+    
+
+function limpar() {
+  id = null;
+  marca = null;
+  modelo = null;
+  ano = null;
+  cor = null;
+  tipo_veiculo = null;
+  tipo_motor = null;
+  combustivel = null;
+  cambio = null;
+  chassi = null;
 };
+
+function salvar() {
+  // Se tiver ID, é uma edição, se-não é um novo registro
+  if (id.value) {
+    axios
+      .patch(
+        `https://aula8-58352-default-rtdb.firebaseio.com/veiculos/${id.value}.json`,
+        {
+          marca: marca.value,
+          modelo: modelo.value,
+          ano: ano.value + "-01",
+          cor: cor.value,
+          tipo_veiculo: tipo_veiculo.value,
+          tipo_motor: tipo_motor.value,
+          combustivel: combustivel.value,
+          cambio: cambio.value,
+          chassi: chassi.value,
+        },
+      )
+      .then((response) => {
+        console.log(response);
+        limpar();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    axios
+      .post(
+        `https://aula8-58352-default-rtdb.firebaseio.com/veiculos.json`,
+        {
+          marca: marca.value,
+          modelo: modelo.value,
+          ano: ano.value + "-01",
+          cor: cor.value,
+          tipo_veiculo: tipo_veiculo.value,
+          tipo_motor: tipo_motor.value,
+          combustivel: combustivel.value,
+          cambio: cambio.value,
+          chassi: chassi.value,
+        },
+      )
+      .then((response) => {
+        console.log(response);
+        limpar();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  router.push({ name: "Viewer" });
+};
+
+onMounted(() => {
+  if (route.params.id) {
+    axios
+      .get(`https://aula8-58352-default-rtdb.firebaseio.com/veiculos/${route.params.id}.json`)
+      .then((response) => {
+        console.log(response);
+        id.value = route.params.id;
+        marca.value = response.data.marca;
+        modelo.value = response.data.modelo;
+        ano.value = response.data.ano.substring(0, 7);
+        cor.value = response.data.cor;
+        tipo_veiculo.value = response.data.tipo_veiculo;
+        tipo_motor.value = response.data.tipo_motor;
+        combustivel.value = response.data.combustivel;
+        cambio.value = response.data.cambio;
+        chassi.value = response.data.chassi;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+});
 </script>
 
 <style>

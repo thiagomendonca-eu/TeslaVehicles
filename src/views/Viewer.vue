@@ -30,7 +30,7 @@
               <v-spacer></v-spacer>
               <v-btn
                 color="primary"
-                :to="`/${veiculo.id}`"
+                :to="`/home/${veiculo.id}`"
                 prepend-icon="mdi-pencil"
                 >Editar</v-btn
               >
@@ -73,16 +73,20 @@ export default {
   methods: {
     fetchAll() {
       this.axios
-        .get(`${this.supabaseUrl}/veiculos?select=*`, {
-          headers: {
-            apikey: this.supabaseApiKey,
-            Authorization: `Bearer ${this.supabaseToken}`,
-          },
-          contentType: "application/json",
-        })
+        .get(`https://aula8-58352-default-rtdb.firebaseio.com/veiculos.json`)
         .then((response) => {
-          this.veiculos = response.data;
-          this.veiculosCopy = response.data;
+          // this.veiculos = response.data;
+          // this.veiculosCopy = response.data;
+          Object.keys(response.data).forEach((key) => {
+            this.veiculos.push({
+              id: key,
+              ...response.data[key],
+            });
+            this.veiculosCopy.push({
+              id: key,
+              ...response.data[key],
+            });
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -91,13 +95,7 @@ export default {
 
     excluir(id) {
       this.axios
-        .delete(`${this.supabaseUrl}/veiculos?id=eq.${id}`, {
-          headers: {
-            apikey: this.supabaseApiKey,
-            Authorization: `Bearer ${this.supabaseToken}`,
-          },
-          contentType: "application/json",
-        })
+        .delete(`https://aula8-58352-default-rtdb.firebaseio.com/veiculos/${id}.json`)
         .then((response) => {
           this.veiculos = this.veiculos.filter((veiculo) => veiculo.id !== id);
           console.log(response);
