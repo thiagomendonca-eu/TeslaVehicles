@@ -13,9 +13,11 @@ import { createApp } from "vue";
 // Plugins
 import { registerPlugins } from "@/plugins";
 
+
 //Axios
 import axios from "axios";
 import VueAxios from "vue-axios";
+import { createPinia } from 'pinia'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -36,10 +38,12 @@ const firebaseConfig = {
 // Initialize Firebase
 initializeApp(firebaseConfig);
 
+const pinia = createPinia()
 const app = createApp(App);
 
 registerPlugins(app);
 
 app.use(VueAxios, axios);
+app.use(pinia);
 
 app.mount("#app");

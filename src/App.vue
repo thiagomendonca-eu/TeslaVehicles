@@ -1,3 +1,11 @@
+<!-- 
+1. [2.0 pt] No mínimo 2 rotas: Login e CRUD; ✅
+2. [2.0 pt] Faça um CRUD com Firebase; ✅
+3. [2.0 pt] Faça LOGIN social com Firebase; ✅
+4. [2.0 pt] Utilize o Pinia para armazenar o estado de logado. A tela do CRUD só pode aparecer se o usuário estiver logado; ✅
+5. [2.0 pt] Deve ser usado o vuetify; ✅
+-->
+
 <template>
   <div>
     <v-app>
@@ -8,41 +16,40 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-tabs>
-          <v-tab v-show="logged" to="/home">Cadastrar</v-tab>
-          <v-tab v-show="logged" to="/viewer">Visualizar</v-tab>
-          <v-tab v-show="logged" @click="logout">Sair</v-tab>
+          <v-tab v-show="isLogged.status" to="/home">Cadastrar</v-tab>
+          <v-tab v-show="isLogged.status" to="/viewer">Visualizar</v-tab>
+          <v-tab v-show="isLogged.status" @click="logout">Sair</v-tab>
         </v-tabs>
       </v-app-bar>
       <v-main>
-        <router-view />
+        <router-view :key="route.fullPath" />
       </v-main>
     </v-app>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { useLoggedStore } from '@/store/logged';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+
+const isLogged = useLoggedStore();
 
 const auth = getAuth();
-const logged = ref(false);
 
 const router = useRouter();
+const route = useRoute();
 
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    logged.value = true;
-    console.log('logged');
-  } else {
-    logged.value = false;
-    console.log('not logged');
+  if(route.path === "/" && user){
+    router.push('/home');
   }
+  else if(route.path !== "/" && !user){
+    router.push('/');
+  }
+  isLogged.status = user ? true : false;
 });
 
-const logout = () => {
+function logout(){
   auth.signOut();
-  console.log('logout');
-  router.push('/');
 };
-
 </script>

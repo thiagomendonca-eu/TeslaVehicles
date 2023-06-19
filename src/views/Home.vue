@@ -1,5 +1,5 @@
 <template>
-    <v-container class="mt-8">
+    <v-container class="mt-8" v-if="isLogged.status">
       <v-card>
         <v-card-title v-show="!id">Cadastrar Veículo</v-card-title>
         <v-card-title v-show="id">Editar Veículo: {{ id }}</v-card-title>
@@ -80,12 +80,12 @@
 </template>
 
 <script setup>
+import { useLoggedStore } from '@/store/logged';
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from "axios";
 
-const logged = ref(false);
+const isLogged = useLoggedStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -103,16 +103,16 @@ const chassi = ref(null);
     
 
 function limpar() {
-  id = null;
-  marca = null;
-  modelo = null;
-  ano = null;
-  cor = null;
-  tipo_veiculo = null;
-  tipo_motor = null;
-  combustivel = null;
-  cambio = null;
-  chassi = null;
+  id.value = null;
+  marca.value = null;
+  modelo.value = null;
+  ano.value = null;
+  cor.value = null;
+  tipo_veiculo.value = null;
+  tipo_motor.value = null;
+  combustivel.value = null;
+  cambio.value = null;
+  chassi.value = null;
 };
 
 function salvar() {
@@ -172,7 +172,6 @@ onMounted(() => {
     axios
       .get(`https://aula8-58352-default-rtdb.firebaseio.com/veiculos/${route.params.id}.json`)
       .then((response) => {
-        console.log(response);
         id.value = route.params.id;
         marca.value = response.data.marca;
         modelo.value = response.data.modelo;
