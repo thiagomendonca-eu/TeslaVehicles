@@ -15,7 +15,7 @@
       <v-col v-for="(veiculo, index) in veiculos" :key="index" sm="4">
         <v-card>
           <v-img
-            :src="`https://api.unsplash.com/photos/random?query=car-${veiculo.modelo}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`"
+            :src="`https://source.unsplash.com/random/?car=${veiculo.id}`"
             height="200px"
             cover
           />
