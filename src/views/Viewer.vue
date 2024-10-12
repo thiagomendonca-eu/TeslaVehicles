@@ -15,7 +15,7 @@
       <v-col v-for="(veiculo, index) in veiculos" :key="index" sm="4">
         <v-card>
           <v-img
-            :src="`https://api.unsplash.com/photos/random?query=car-${veiculo.modelo}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`"
+            :src="`https://source.unsplash.com/random/?car=${veiculo.id}`"
             height="200px"
             cover
           />
@@ -95,13 +95,11 @@ function fetchAll() {
     .catch((error) => {
       console.log(error);
     });
-}
+};
 
 function excluir(id) {
   axios
-    .delete(
-      `https://aula8-58352-default-rtdb.firebaseio.com/veiculos/${id}.json`
-    )
+    .delete(`https://aula8-58352-default-rtdb.firebaseio.com/veiculos/${id}.json`)
     .then((response) => {
       veiculos.value = veiculos.value.filter((veiculo) => veiculo.id !== id);
       console.log(response);
@@ -109,7 +107,7 @@ function excluir(id) {
     .catch((error) => {
       console.log(error);
     });
-}
+};
 
 watch(search, (value) => {
   veiculos.value = veiculosCopy.value.filter((veiculo) => {
@@ -122,6 +120,7 @@ watch(search, (value) => {
 //     veiculo.modelo.toLowerCase().includes(search.toLowerCase())
 //   );
 // }
+
 </script>
 
 <style>
